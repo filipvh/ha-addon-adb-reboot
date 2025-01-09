@@ -1,0 +1,4 @@
+#!/command/with-contenv bashio
+
+echo "adb-reboot stopped."
+exit 0
