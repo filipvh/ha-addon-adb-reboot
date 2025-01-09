@@ -1,0 +1,3 @@
+name: "adb-reboot",
+url: "https://github.com/filipvh/ha-addon-adb-reboot",
+maintainer: "Filip Van Ham <filip.van.ham@gmail.com>"

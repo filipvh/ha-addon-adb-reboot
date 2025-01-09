@@ -1,0 +1,9 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Home Assistant Community Add-on: adb-reboot
+# ==============================================================================
+
+bashio::log.info "Starting adb-reboot..."
+
+exec /usr/bin/python3 /opt/run.py
