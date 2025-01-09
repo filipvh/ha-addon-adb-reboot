@@ -4,7 +4,9 @@ startup: services
 url: https://github.com/filipvh/ha-addon-adb-reboot
 panel_icon: mdi:android
 version: 1.0
-description: A simple Home Assistant add-on.
+description: ADB Reboot devices
+host_network: true
+init: false
 arch:
 - armhf
 - armv7

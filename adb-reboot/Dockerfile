@@ -30,7 +30,7 @@ LABEL \
     maintainer="Filip Van Ham <filip.van.ham@gmail.com>" \
     org.opencontainers.image.title="${BUILD_NAME}" \
     org.opencontainers.image.description="${BUILD_DESCRIPTION}" \
-    org.opencontainers.image.vendor="Home Assistant Community Add-ons" \
+    org.opencontainers.image.vendor="Filip Van Ham" \
     org.opencontainers.image.authors="Filip Van Ham <filip.van.ham@gmail.com>" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.url="https://github.com/${BUILD_REPOSITORY}" \
