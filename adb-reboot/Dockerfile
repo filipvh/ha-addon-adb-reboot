@@ -9,7 +9,8 @@ COPY rootfs /
 RUN apk add --no-cache \
     coreutils \
     wget \
-    python3
+    python3 \
+    py3-pip
 RUN pip3 install -r requirements.txt
 
 # Build arguments
