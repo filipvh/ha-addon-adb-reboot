@@ -10,7 +10,8 @@ RUN apk add --no-cache \
     coreutils \
     wget \
     python3 \
-    py3-pip
+    py3-pip \
+    android-tools
 
 
 # Create a virtual environment in /opt/venv

@@ -6,5 +6,7 @@
 
 bashio::log.info "Starting adb-reboot..."
 
+adb start-server
+
 # Make sure we use the Python interpreter from /opt/venv
 exec /opt/venv/bin/python /opt/run.py
