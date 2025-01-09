@@ -3,7 +3,7 @@ slug: my_addon
 startup: services
 url: https://github.com/filipvh/ha-addon-adb-reboot
 panel_icon: mdi:android
-version: 1.1.6
+version: 1.1.7
 description: ADB Reboot devices
 host_network: true
 init: false
