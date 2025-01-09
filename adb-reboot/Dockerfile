@@ -10,7 +10,7 @@ RUN apk add --no-cache \
     coreutils \
     wget \
     python3
-RUN pip3 install pydantic pure-python-adb schedule
+RUN pip3 install -r requirements.txt
 
 # Build arguments
 ARG BUILD_ARCH
