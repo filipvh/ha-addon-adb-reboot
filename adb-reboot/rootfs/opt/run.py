@@ -3,8 +3,9 @@ import os
 import sys
 import threading
 import time
+import datetime
 
-import schedule
+from croniter import croniter
 from ppadb.client import Client as AdbClient
 from pydantic import ValidationError, BaseModel
 
@@ -13,7 +14,7 @@ lock = threading.Lock()
 
 class RebootConfig(BaseModel):
     host: str
-    cron: str
+    cron: str  # e.g., "0 3 * * *" for every day at 3:00 AM
 
 class Config(BaseModel):
     reboot: list[RebootConfig]
@@ -25,16 +26,17 @@ def reboot_device(client, host):
     with lock:
         device = client.device(host)
         if device:
-            print(f"Rebooting {device.serial}")
+            print(f"[{datetime.datetime.now()}] Rebooting {device.serial}")
             device.reboot()
         else:
-            print(f"Failed to connect to {host}")
+            print(f"[{datetime.datetime.now()}] Failed to connect to {host}")
 
 def main():
     if not os.path.exists(CONFIG_PATH):
         log_error("Configuration file not found!")
         sys.exit(1)
 
+    # Load the JSON config
     try:
         with open(CONFIG_PATH, "r") as f:
             config_data = json.load(f)
@@ -46,14 +48,28 @@ def main():
     # Connect to ADB server
     client = AdbClient(host="127.0.0.1", port=5037)
 
-    # Schedule reboots
+    # Prepare a job list with croniter for each device
+    jobs = []
+    now = datetime.datetime.now()
     for item in config.reboot:
-        schedule.every().day.at(item.cron).do(reboot_device, client, item.host)
+        cron = croniter(item.cron, now)
+        next_run = cron.get_next(datetime.datetime)
+        jobs.append({
+            "host": item.host,
+            "cron": cron,
+            "next_run": next_run
+        })
 
-    # Keep the script running and check the schedule
+    print("Starting cron-based scheduling loop...")
     while True:
-        schedule.run_pending()
-        time.sleep(1)
+        now = datetime.datetime.now()
+        for job in jobs:
+            if now >= job["next_run"]:
+                reboot_device(client, job["host"])
+                # Get next scheduled run
+                job["next_run"] = job["cron"].get_next(datetime.datetime)
+
+        time.sleep(1)  # Sleep a bit so we don't burn CPU
 
 if __name__ == "__main__":
     main()
