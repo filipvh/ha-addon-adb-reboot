@@ -1,0 +1,8 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Start the adb server
+# ==============================================================================
+
+bashio::log.info "Starting the ADB Server"
+
+exec /usr/bin/adb start-server

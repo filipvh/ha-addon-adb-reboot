@@ -1,0 +1,4 @@
+#!/command/with-contenv bashio
+
+echo "Stopping ADB server..."
+exit 0
