@@ -23,7 +23,7 @@ def log_error(message):
     print(f"ERROR: {message}", file=sys.stderr)
 
 def log_info(message):
-    print(f" INFO: {message}", file=sys.stdout)
+    print(f" INFO: {message}", file=sys.stderr)
 
 def reboot_device(client, host):
     with lock:
@@ -35,7 +35,6 @@ def reboot_device(client, host):
             log_info(f"[{datetime.datetime.now()}] Failed to connect to {host}")
 
 def main():
-    log_error("Starting ADB reboot service...")
     log_info("Starting ADB reboot service...")
     if not os.path.exists(CONFIG_PATH):
         log_error("Configuration file not found!")
