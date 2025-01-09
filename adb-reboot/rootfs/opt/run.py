@@ -35,6 +35,7 @@ def reboot_device(client, host):
             log_info(f"[{datetime.datetime.now()}] Failed to connect to {host}")
 
 def main():
+    log_info("Starting ADB reboot service...")
     if not os.path.exists(CONFIG_PATH):
         log_error("Configuration file not found!")
         sys.exit(1)
@@ -63,7 +64,7 @@ def main():
             "next_run": next_run
         })
 
-    print("Starting cron-based scheduling loop...")
+    log_info("Starting cron-based scheduling loop...")
     while True:
         now = datetime.datetime.now()
         for job in jobs:
