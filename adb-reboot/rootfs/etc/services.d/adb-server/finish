@@ -1,4 +1,9 @@
 #!/command/with-contenv bashio
 
+if [[ "${1}" -ne 0 ]] && [[ "${1}" -ne 256 ]]; then
+  bashio::log.warning "ADB server crashed, halting add-on"
+  /run/s6/basedir/bin/halt
+fi
+
 echo "Stopping ADB server..."
 exit 0
