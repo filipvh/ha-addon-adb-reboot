@@ -11,7 +11,16 @@ RUN apk add --no-cache \
     wget \
     python3 \
     py3-pip
-RUN pip3 install -r /opt/requirements.txt
+
+
+# Create a virtual environment in /opt/venv
+RUN python3 -m venv /opt/venv
+
+# Upgrade pip/setuptools/wheel in the venv (recommended)
+RUN /opt/venv/bin/pip install --upgrade pip setuptools wheel
+
+# Now install your requirements from within the venv
+RUN /opt/venv/bin/pip install -r /opt/requirements.txt
 
 # Build arguments
 ARG BUILD_ARCH

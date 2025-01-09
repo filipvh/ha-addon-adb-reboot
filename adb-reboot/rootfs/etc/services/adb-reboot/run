@@ -6,4 +6,5 @@
 
 bashio::log.info "Starting adb-reboot..."
 
-exec /usr/bin/python3 /opt/run.py
+# Make sure we use the Python interpreter from /opt/venv
+exec /opt/venv/bin/python /opt/run.py
