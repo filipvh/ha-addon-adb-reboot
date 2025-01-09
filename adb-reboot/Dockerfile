@@ -11,7 +11,7 @@ RUN apk add --no-cache \
     wget \
     python3 \
     py3-pip
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r /opt/requirements.txt
 
 # Build arguments
 ARG BUILD_ARCH
