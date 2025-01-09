@@ -8,7 +8,8 @@ COPY rootfs /
 # Setup base
 RUN apk add --no-cache \
     coreutils \
-    wget
+    wget \
+    python3
 RUN pip3 install pydantic pure-python-adb schedule
 
 # Build arguments
