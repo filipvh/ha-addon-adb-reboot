@@ -22,14 +22,17 @@ class Config(BaseModel):
 def log_error(message):
     print(f"ERROR: {message}", file=sys.stderr)
 
+def log_info(message):
+    print(f" INFO: {message}", file=sys.stdout)
+
 def reboot_device(client, host):
     with lock:
         device = client.device(host)
         if device:
-            print(f"[{datetime.datetime.now()}] Rebooting {device.serial}")
+            log_info(f"[{datetime.datetime.now()}] Rebooting {device.serial}")
             device.reboot()
         else:
-            print(f"[{datetime.datetime.now()}] Failed to connect to {host}")
+            log_info(f"[{datetime.datetime.now()}] Failed to connect to {host}")
 
 def main():
     if not os.path.exists(CONFIG_PATH):
@@ -68,6 +71,7 @@ def main():
                 reboot_device(client, job["host"])
                 # Get next scheduled run
                 job["next_run"] = job["cron"].get_next(datetime.datetime)
+                log_info(f"Next reboot for {job['host']} scheduled for {job['next_run']}")
 
         time.sleep(1)  # Sleep a bit so we don't burn CPU
 
