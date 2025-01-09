@@ -1,0 +1,17 @@
+{
+  "name": "adb-reboot",
+  "version": "1.0",
+  "slug": "my_addon",
+  "description": "A simple Home Assistant add-on.",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "startup": "services",
+  "boot": "auto",
+  "schema": {
+    "reboot": [
+      {
+        "host": "str",
+        "cron": "str"
+      }
+    ]
+  }
+}
