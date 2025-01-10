@@ -58,6 +58,7 @@ def main():
     for item in config.reboot:
         cron = croniter(item.cron, now)
         next_run = cron.get_next(datetime.datetime)
+        log_info(f"Next reboot for {item.host} scheduled for {next_run}")
         jobs.append({
             "host": item.host,
             "cron": cron,
