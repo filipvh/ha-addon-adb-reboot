@@ -4,11 +4,6 @@
 # Home Assistant Community Add-on: adb-reboot
 # ==============================================================================
 
-bashio::log.info "Waiting for adb-server..."
-# Wait for adb server to become available
-s6-svwait -u -t 5000 /run/service/adb-server
-bashio::log.info "Done waiting for adb-server..."
-
 bashio::log.info "Starting adb-reboot..."
 
 # Make sure we use the Python interpreter from /opt/venv

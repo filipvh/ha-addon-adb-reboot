@@ -1,12 +1,13 @@
 import json
 import os
+import socket
+import subprocess
 import sys
 import threading
 import time
 import datetime
 
 from croniter import croniter
-from ppadb.client import Client as AdbClient
 from pydantic import ValidationError, BaseModel
 
 CONFIG_PATH = "/data/options.json"
@@ -25,14 +26,33 @@ def log_error(message):
 def log_info(message):
     print(f" INFO: {message}", file=sys.stderr)
 
-def reboot_device(client, host):
+def is_valid_host(host):
+    """
+    Checks if the provided string is a valid IP address or hostname.
+    """
+    try:
+        # Try to resolve the host (works for both IP and hostname)
+        socket.gethostbyname(host)
+        return True
+    except socket.gaierror:
+        return False
+
+def reboot_device(host):
+    if not is_valid_host(host):
+        print(f"{host} is not a valid hostname or IP.")
+        return
     with lock:
-        device = client.device(host)
-        if device:
-            log_info(f"[{datetime.datetime.now()}] Rebooting {device.serial}")
-            device.reboot()
-        else:
-            log_info(f"[{datetime.datetime.now()}] Failed to connect to {host}")
+        try:
+            # Build the adb command
+            command = ["adb", "-s", f"{host}:5555", "reboot"]
+
+            # Execute the command
+            subprocess.run(command, check=True)
+            print(f"Reboot command sent to {host}.")
+        except subprocess.CalledProcessError as e:
+            print(f"Failed to reboot {host}: {e}")
+        except FileNotFoundError:
+            print("adb not found. Make sure it's installed and in your PATH.")
 
 def main():
     log_info("Starting ADB reboot service...")
@@ -49,8 +69,6 @@ def main():
         log_error(e)
         sys.exit(1)
 
-    # Connect to ADB server
-    client = AdbClient(host="127.0.0.1", port=5037)
 
     # Prepare a job list with croniter for each device
     jobs = []
@@ -70,7 +88,7 @@ def main():
         now = datetime.datetime.now()
         for job in jobs:
             if now >= job["next_run"]:
-                reboot_device(client, job["host"])
+                reboot_device(job["host"])
                 # Get next scheduled run
                 job["next_run"] = job["cron"].get_next(datetime.datetime)
                 log_info(f"Next reboot for {job['host']} scheduled for {job['next_run']}")
