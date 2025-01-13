@@ -44,10 +44,14 @@ def reboot_device(host):
     with lock:
         try:
             # Build the adb command
-            command = ["adb", "-s", f"{host}:5555", "reboot"]
+            command_c = ["adb", "connect", f"{host}:5555"]
+            command_r = ["adb", "-s", f"{host}:5555", "reboot"]
+            command_d = ["adb", "disconnect"]
 
             # Execute the command
-            subprocess.run(command, check=True)
+            subprocess.run(command_c, check=True)
+            subprocess.run(command_r, check=True)
+            subprocess.run(command_d, check=True)
             print(f"Reboot command sent to {host}.")
         except subprocess.CalledProcessError as e:
             print(f"Failed to reboot {host}: {e}")
